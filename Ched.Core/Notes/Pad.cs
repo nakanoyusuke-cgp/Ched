@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ched.Core
+namespace Ched.Core.Notes
 {
-    public static class Constants
+    public class Pad: NoteBase
     {
-        public static int LanesCount = 6;
     }
 }

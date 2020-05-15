@@ -7,50 +7,27 @@ using System.Threading.Tasks;
 namespace Ched.Core.Notes
 {
     [Newtonsoft.Json.JsonObject(Newtonsoft.Json.MemberSerialization.OptIn)]
-    public class Hold : MovableLongNoteBase
+    public class Hold : TapHold
     {
-        [Newtonsoft.Json.JsonProperty]
-        private int laneIndex;
-        [Newtonsoft.Json.JsonProperty]
-        private int width = 1;
+
         [Newtonsoft.Json.JsonProperty]
         private int duration = 1;
 
         [Newtonsoft.Json.JsonProperty]
-        private StartTap startNote;
+        private StartTap startTap;
+
         [Newtonsoft.Json.JsonProperty]
-        private EndTap endNote;
+        private EndTap endTap;
 
-        /// <summary>
-        /// ノートの配置されるレーン番号を設定します。。
-        /// </summary>
-        public int LaneIndex
-        {
-            get { return laneIndex; }
-            set
-            {
-                CheckPosition(value, Width);
-                laneIndex = value;
-            }
+        public override bool IsHold{
+            get{return true;}
         }
 
-        /// <summary>
-        /// ノートのレーン幅を設定します。
-        /// </summary>
-        public int Width
-        {
-            get { return width; }
-            set
-            {
-                CheckPosition(LaneIndex, value);
-                width = value;
-            }
-        }
 
         /// <summary>
         /// ノートの長さを設定します。
         /// </summary>
-        public int Duration
+        public override int Duration
         {
             get { return duration; }
             set
@@ -61,67 +38,57 @@ namespace Ched.Core.Notes
             }
         }
 
-        protected void CheckPosition(int laneIndex, int width)
+        public void SetPosition(int laneIndex)
         {
-            if (width < 1 || width > Constants.LanesCount)
-                throw new ArgumentOutOfRangeException("width", "Invalid width.");
-            if (laneIndex < 0 || laneIndex + width > Constants.LanesCount)
-                throw new ArgumentOutOfRangeException("laneIndex", "Invalid lane index.");
+            LaneIndex = laneIndex;
         }
-
-        public void SetPosition(int laneIndex, int width)
-        {
-            CheckPosition(laneIndex, width);
-            this.laneIndex = laneIndex;
-            this.width = width;
-        }
-
-        public StartTap StartNote { get { return startNote; } }
-        public EndTap EndNote { get { return endNote; } }
-
+        
+        public StartTap StartNote { get { return startTap; } }
+        public EndTap EndNote { get { return endTap; } }
+        
         public Hold()
         {
-            startNote = new StartTap(this);
-            endNote = new EndTap(this);
+            startTap = new StartTap(this);
+            endTap = new EndTap(this);
         }
-
-        public override int GetDuration()
+        
+        public int GetDuration()
         {
             return Duration;
         }
-
+        
         [Newtonsoft.Json.JsonObject(Newtonsoft.Json.MemberSerialization.OptIn)]
-        public abstract class TapBase : LongNoteTapBase
+        public abstract class LongNoteTapBase
         {
+            public abstract bool IsTap { get; }
+            public abstract int Tick { get; }
             protected Hold parent;
-
-            public override int LaneIndex { get { return parent.LaneIndex; } }
-
-            public override int Width { get { return parent.Width; } }
-
-            public TapBase(Hold parent)
+        
+            public int LaneIndex { get { return parent.LaneIndex; } }
+        
+            public LongNoteTapBase(Hold parent)
             {
                 this.parent = parent;
             }
         }
-
-        public class StartTap : TapBase
+        
+        public class StartTap : LongNoteTapBase
         {
-            public override int Tick { get { return parent.StartTick; } }
-
+            public override int Tick { get { return parent.Tick; } }
+        
             public override bool IsTap { get { return true; } }
-
+        
             public StartTap(Hold parent) : base(parent)
             {
             }
         }
-
-        public class EndTap : TapBase
+        
+        public class EndTap : LongNoteTapBase
         {
             public override bool IsTap { get { return false; } }
-
-            public override int Tick { get { return parent.StartTick + parent.Duration; } }
-
+        
+            public override int Tick { get { return parent.Tick + parent.Duration; } }
+        
             public EndTap(Hold parent) : base(parent)
             {
             }

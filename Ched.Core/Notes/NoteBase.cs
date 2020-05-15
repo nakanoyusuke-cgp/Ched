@@ -8,5 +8,12 @@ namespace Ched.Core.Notes
 {
     public abstract class NoteBase
     {
+        [Newtonsoft.Json.JsonProperty]
+        private TapHold tapHold;
+
+        public TapHold TapHold
+        {
+            get => tapHold;
+        }
     }
 }

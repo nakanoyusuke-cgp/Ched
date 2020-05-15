@@ -24,30 +24,27 @@ namespace Ched.UI.Operations
         public abstract void Redo();
     }
 
-    public class InsertTapOperation : NoteCollectionOperation<Tap>
-    {
-        public override string Description { get { return "TAPの追加"; } }
+    public class InsertPadOperation : NoteCollectionOperation<Pad>{
+        public override string Description { get { return "Padの追加"; } }
 
-        public InsertTapOperation(NoteView.NoteCollection collection, Tap note) : base(collection, note)
+        public InsertPadOperation(NoteView.NoteCollection collection, Pad note) : base(collection, note)
         {
         }
 
-        public override void Redo()
-        {
+        public override void Redo(){
             Collection.Add(Note);
         }
 
-        public override void Undo()
-        {
+        public override void Undo(){
             Collection.Remove(Note);
         }
     }
 
-    public class RemoveTapOperation : NoteCollectionOperation<Tap>
+    public class RemovePadOperation : NoteCollectionOperation<Pad>
     {
-        public override string Description { get { return "TAPの削除"; } }
+        public override string Description { get { return "Padの削除"; } }
 
-        public RemoveTapOperation(NoteView.NoteCollection collection, Tap note) : base(collection, note)
+        public RemovePadOperation(NoteView.NoteCollection collection, Pad note) : base(collection, note)
         {
         }
 
@@ -62,30 +59,27 @@ namespace Ched.UI.Operations
         }
     }
 
-    public class InsertExTapOperation : NoteCollectionOperation<ExTap>
-    {
-        public override string Description { get { return "ExTAPの追加"; } }
+    public class InsertFaderOperation : NoteCollectionOperation<Fader>{
+        public override string Description { get { return "Faderの追加"; } }
 
-        public InsertExTapOperation(NoteView.NoteCollection collection, ExTap note) : base(collection, note)
+        public InsertFaderOperation(NoteView.NoteCollection collection, Fader note) : base(collection, note)
         {
         }
 
-        public override void Redo()
-        {
+        public override void Redo(){
             Collection.Add(Note);
         }
 
-        public override void Undo()
-        {
+        public override void Undo(){
             Collection.Remove(Note);
         }
     }
 
-    public class RemoveExTapOperation : NoteCollectionOperation<ExTap>
+    public class RemoveFaderOperation : NoteCollectionOperation<Fader>
     {
-        public override string Description { get { return "ExTAPの削除"; } }
+        public override string Description { get { return "Faderの削除"; } }
 
-        public RemoveExTapOperation(NoteView.NoteCollection collection, ExTap note) : base(collection, note)
+        public RemoveFaderOperation(NoteView.NoteCollection collection, Fader note) : base(collection, note)
         {
         }
 
@@ -100,221 +94,27 @@ namespace Ched.UI.Operations
         }
     }
 
-    public class InsertHoldOperation : NoteCollectionOperation<Hold>
-    {
-        public override string Description { get { return "HOLDの追加"; } }
+    public class InsertKnobOperation : NoteCollectionOperation<Knob>{
+        public override string Description { get { return "Knobの追加"; } }
 
-        public InsertHoldOperation(NoteView.NoteCollection collection, Hold note) : base(collection, note)
+        public InsertKnobOperation(NoteView.NoteCollection collection, Knob note) : base(collection, note)
         {
         }
 
-        public override void Redo()
-        {
+        public override void Redo(){
             Collection.Add(Note);
         }
 
-        public override void Undo()
-        {
+        public override void Undo(){
             Collection.Remove(Note);
         }
     }
 
-    public class RemoveHoldOperation : NoteCollectionOperation<Hold>
+    public class RemoveKnobOperation : NoteCollectionOperation<Knob>
     {
-        public override string Description { get { return "HOLDの削除"; } }
+        public override string Description { get { return "Knobの削除"; } }
 
-        public RemoveHoldOperation(NoteView.NoteCollection collection, Hold note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Remove(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Add(Note);
-        }
-    }
-
-    public class InsertSlideOperation : NoteCollectionOperation<Slide>
-    {
-        public override string Description { get { return "SLIDEの追加"; } }
-
-        public InsertSlideOperation(NoteView.NoteCollection collection, Slide note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Add(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Remove(Note);
-        }
-    }
-
-    public class RemoveSlideOperation : NoteCollectionOperation<Slide>
-    {
-        public override string Description { get { return "SLIDEの削除"; } }
-
-        public RemoveSlideOperation(NoteView.NoteCollection collection, Slide note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Remove(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Add(Note);
-        }
-    }
-
-    public class InsertFlickOperation : NoteCollectionOperation<Flick>
-    {
-        public override string Description { get { return "FLICKの追加"; } }
-
-        public InsertFlickOperation(NoteView.NoteCollection collection, Flick note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Add(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Remove(Note);
-        }
-    }
-
-    public class RemoveFlickOperation : NoteCollectionOperation<Flick>
-    {
-        public override string Description { get { return "FLICKの削除"; } }
-
-        public RemoveFlickOperation(NoteView.NoteCollection collection, Flick note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Remove(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Add(Note);
-        }
-    }
-
-    public class InsertAirOperation : NoteCollectionOperation<Air>
-    {
-        public override string Description { get { return "AIRの追加"; } }
-
-        public InsertAirOperation(NoteView.NoteCollection collection, Air note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Add(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Remove(Note);
-        }
-    }
-
-    public class RemoveAirOperation : NoteCollectionOperation<Air>
-    {
-        public override string Description { get { return "AIRの削除"; } }
-
-        public RemoveAirOperation(NoteView.NoteCollection collection, Air note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Remove(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Add(Note);
-        }
-    }
-
-    public class InsertAirActionOperation : NoteCollectionOperation<AirAction>
-    {
-        public override string Description { get { return "AIR-ACTIONの追加"; } }
-
-        public InsertAirActionOperation(NoteView.NoteCollection collection, AirAction note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Add(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Remove(Note);
-        }
-    }
-
-    public class RemoveAirActionOperation : NoteCollectionOperation<AirAction>
-    {
-        public override string Description { get { return "AIR-ACTIONの削除"; } }
-
-        public RemoveAirActionOperation(NoteView.NoteCollection collection, AirAction note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Remove(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Add(Note);
-        }
-    }
-
-
-    public class InsertDamageOperation : NoteCollectionOperation<Damage>
-    {
-        public override string Description { get { return "ダメージノーツの追加"; } }
-
-        public InsertDamageOperation(NoteView.NoteCollection collection, Damage note) : base(collection, note)
-        {
-        }
-
-        public override void Redo()
-        {
-            Collection.Add(Note);
-        }
-
-        public override void Undo()
-        {
-            Collection.Remove(Note);
-        }
-    }
-
-    public class RemoveDamageOperation : NoteCollectionOperation<Damage>
-    {
-        public override string Description { get { return "ダメージノーツの削除"; } }
-
-        public RemoveDamageOperation(NoteView.NoteCollection collection, Damage note) : base(collection, note)
+        public RemoveKnobOperation(NoteView.NoteCollection collection, Knob note) : base(collection, note)
         {
         }
 

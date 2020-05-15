@@ -70,18 +70,22 @@
     <Compile Include="Events\HighSpeedChangeEvent.cs" />
     <Compile Include="Events\TimeSignatureChangeEvent.cs" />
     <Compile Include="NoteCollection.cs" />
-    <Compile Include="Notes\Air.cs" />
-    <Compile Include="Notes\AirAction.cs" />
-    <Compile Include="Notes\Damage.cs" />
-    <Compile Include="Notes\ExTap.cs" />
-    <Compile Include="Notes\Flick.cs" />
+    <Compile Include="Notes\OldTmp\Air.cs" />
+    <Compile Include="Notes\OldTmp\AirAction.cs" />
+    <Compile Include="Notes\OldTmp\Damage.cs" />
+    <Compile Include="Notes\OldTmp\ExTap.cs" />
+    <Compile Include="Notes\Fader.cs" />
+    <Compile Include="Notes\OldTmp\Flick.cs" />
     <Compile Include="Notes\Hold.cs" />
-    <Compile Include="Notes\LongNoteBase.cs" />
+    <Compile Include="Notes\Knob.cs" />
+    <Compile Include="Notes\OldTmp\LongNoteBase.cs" />
     <Compile Include="Notes\NoteBase.cs" />
-    <Compile Include="Notes\ShortNoteBase.cs" />
-    <Compile Include="Notes\Slide.cs" />
+    <Compile Include="Notes\Pad.cs" />
+    <Compile Include="Notes\OldTmp\ShortNoteBase.cs" />
+    <Compile Include="Notes\OldTmp\Slide.cs" />
     <Compile Include="Notes\Tap.cs" />
-    <Compile Include="Notes\TappableBase.cs" />
+    <Compile Include="Notes\TapHold.cs" />
+    <Compile Include="Notes\OldTmp\TappableBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="ScoreBook.cs" />
@@ -91,6 +95,7 @@
     <None Include="Ched.Core.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

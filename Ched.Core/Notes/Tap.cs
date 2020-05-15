@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Ched.Core.Notes
 {
-    public class Tap : TappableBase
+    [Newtonsoft.Json.JsonObject(Newtonsoft.Json.MemberSerialization.OptIn)]
+    public class Tap : TapHold
     {
+        public override bool IsHold => false;
+
+        public override int Duration{
+            get{return 0;}
+            set{return;}
+        }
     }
 }
