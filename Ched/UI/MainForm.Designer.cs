@@ -39,7 +39,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "MainForm";
             this.ResumeLayout(false);
-
         }
 
         #endregion

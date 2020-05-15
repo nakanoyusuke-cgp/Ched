@@ -11,6 +11,11 @@ namespace Ched.Core.Notes
         [Newtonsoft.Json.JsonProperty]
         private TapHold tapHold;
 
+        public NoteBase(TapHold tapHold)
+        {
+            this.tapHold = tapHold;
+        }
+
         public TapHold TapHold
         {
             get => tapHold;

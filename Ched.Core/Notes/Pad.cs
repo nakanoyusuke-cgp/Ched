@@ -8,5 +8,8 @@ namespace Ched.Core.Notes
 {
     public class Pad: NoteBase
     {
+        public Pad(TapHold tapHold) : base(tapHold)
+        {
+        }
     }
 }

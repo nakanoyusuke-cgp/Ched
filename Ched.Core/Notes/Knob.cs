@@ -9,6 +9,10 @@ namespace Ched.Core.Notes
     public class Knob: NoteBase
     {
         private HorizontalDirection hroizontalDirection;
+        
+        public Knob(TapHold tapHold) : base(tapHold)
+        {
+        }
 
         public HorizontalDirection HroizontalDirection{
             get{ return hroizontalDirection; }
