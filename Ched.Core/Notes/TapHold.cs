@@ -41,8 +41,9 @@ namespace Ched.Core.Notes
 
         public int GetDuration => Duration;
 
-        public void CheckPosition(int laneIndex){
-            if(laneIndex < 1 || laneIndex<=Constants.LanesCount)
+        public void CheckPosition(int laneIndex)
+        {
+            if (laneIndex < 0 || laneIndex > Constants.LanesCount) 
                 throw new ArgumentOutOfRangeException("width", "Invalid width.");
         }
 
