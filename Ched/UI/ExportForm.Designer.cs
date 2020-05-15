@@ -53,7 +53,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.exportButton = new System.Windows.Forms.Button();
             this.hasPaddingBarBox = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.soundOffsetBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.soundOffsetBox)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -114,23 +114,11 @@
             // 
             // soundOffsetBox
             // 
-            resources.ApplyResources(this.soundOffsetBox, "soundOffsetBox");
             this.soundOffsetBox.DecimalPlaces = 3;
-            this.soundOffsetBox.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.soundOffsetBox.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.soundOffsetBox.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            -2147483648});
+            this.soundOffsetBox.Increment = new decimal(new int[] {1, 0, 0, 131072});
+            resources.ApplyResources(this.soundOffsetBox, "soundOffsetBox");
+            this.soundOffsetBox.Maximum = new decimal(new int[] {1000, 0, 0, 0});
+            this.soundOffsetBox.Minimum = new decimal(new int[] {1000, 0, 0, -2147483648});
             this.soundOffsetBox.Name = "soundOffsetBox";
             // 
             // titleBox
@@ -150,15 +138,15 @@
             // 
             // difficultyDropDown
             // 
-            resources.ApplyResources(this.difficultyDropDown, "difficultyDropDown");
             this.difficultyDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.difficultyDropDown.FormattingEnabled = true;
+            resources.ApplyResources(this.difficultyDropDown, "difficultyDropDown");
             this.difficultyDropDown.Name = "difficultyDropDown";
             // 
             // levelDropDown
             // 
-            resources.ApplyResources(this.levelDropDown, "levelDropDown");
             this.levelDropDown.FormattingEnabled = true;
+            resources.ApplyResources(this.levelDropDown, "levelDropDown");
             this.levelDropDown.Name = "levelDropDown";
             // 
             // songIdBox
@@ -230,15 +218,20 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ExportForm";
-            ((System.ComponentModel.ISupportInitialize)(this.soundOffsetBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.soundOffsetBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
-        #endregion
-
+        private System.Windows.Forms.TextBox artistBox;
+        private System.Windows.Forms.Button browseButton;
+        private System.Windows.Forms.ComboBox difficultyDropDown;
+        private System.Windows.Forms.Button exportButton;
+        private System.Windows.Forms.CheckBox hasPaddingBarBox;
+        private System.Windows.Forms.TextBox jacketFileBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -247,20 +240,14 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button browseButton;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.NumericUpDown soundOffsetBox;
-        private System.Windows.Forms.TextBox titleBox;
-        private System.Windows.Forms.TextBox artistBox;
-        private System.Windows.Forms.TextBox notesDesignerBox;
-        private System.Windows.Forms.ComboBox difficultyDropDown;
         private System.Windows.Forms.ComboBox levelDropDown;
+        private System.Windows.Forms.TextBox notesDesignerBox;
+        private System.Windows.Forms.TextBox outputBox;
         private System.Windows.Forms.TextBox songIdBox;
         private System.Windows.Forms.TextBox soundFileBox;
-        private System.Windows.Forms.TextBox jacketFileBox;
-        private System.Windows.Forms.TextBox outputBox;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button exportButton;
-        private System.Windows.Forms.CheckBox hasPaddingBarBox;
+        private System.Windows.Forms.NumericUpDown soundOffsetBox;
+        private System.Windows.Forms.TextBox titleBox;
+
+        #endregion
     }
 }

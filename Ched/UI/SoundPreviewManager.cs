@@ -61,12 +61,10 @@ namespace Ched.UI
 
             var tickSet = new HashSet<int>();
             var notes = NoteView.Notes;
-            var shortNotesTick = notes.Taps.Cast<TappableBase>().Concat(notes.ExTaps).Concat(notes.Flicks).Concat(notes.Damages).Select(p => p.Tick);
-            var holdsTick = notes.Holds.SelectMany(p => new int[] { p.StartTick, p.StartTick + p.Duration });
-            var slidesTick = notes.Slides.SelectMany(p => new int[] { p.StartTick }.Concat(p.StepNotes.Where(q => q.IsVisible).Select(q => q.Tick)));
-            var airActionsTick = notes.AirActions.SelectMany(p => p.ActionNotes.Select(q => p.StartTick + q.Offset));
+            var shortNotesTick = notes.GetTaps().Select(p => p.Tick);
+            var holdsTick = notes.GetHolds().SelectMany(p => new int[] { p.Tick, p.Tick + p.Duration });
 
-            foreach (int tick in shortNotesTick.Concat(holdsTick).Concat(slidesTick).Concat(airActionsTick))
+            foreach (int tick in shortNotesTick.Concat(holdsTick))
             {
                 tickSet.Add(tick);
             }

@@ -180,7 +180,7 @@ namespace Ched.UI
                 this.Controls.Add(CreateMainToolStrip(NoteView));
             }
 
-            NoteView.NewNoteType = NoteType.Tap;
+            NoteView.NewNoteType = NoteType.Pad;
             NoteView.EditMode = EditMode.Edit;
 
             LoadEmptyBook();
@@ -835,63 +835,62 @@ namespace Ched.UI
 
         private ToolStrip CreateNewNoteTypeToolStrip(NoteView noteView)
         {
-            var tapButton = new ToolStripButton("TAP", Resources.TapIcon, (s, e) => noteView.NewNoteType = NoteType.Tap)
+            var padButton = new ToolStripButton("Pad", Resources.TapIcon, (s, e) => noteView.NewNoteType = NoteType.Pad)
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image
             };
-            var exTapButton = new ToolStripButton("ExTAP", Resources.ExTapIcon, (s, e) => noteView.NewNoteType = NoteType.ExTap)
+            var faderButton = new CheckableToolStripSplitButton
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image
             };
-            var holdButton = new ToolStripButton("HOLD", Resources.HoldIcon, (s, e) => noteView.NewNoteType = NoteType.Hold)
+            faderButton.Text = "Fader";
+            faderButton.Click += (s, e) => noteView.NewNoteType = NoteType.Fader;
+            faderButton.DropDown.Items.AddRange((new ToolStripItem[]
+            {
+                new ToolStripMenuItem(MainFormStrings.FaderDown,Resources.AirDownIcon,(s,e)=>noteView.FaderDirection=new FaderDirection(VerticalDirection.DOWND)), 
+                new ToolStripMenuItem(MainFormStrings.FaderUp,Resources.AirUpIcon,(s,e)=>noteView.FaderDirection=new FaderDirection(VerticalDirection.UP))
+            }));
+            faderButton.Image = Resources.AirDownIcon;
+            var knobButton = new CheckableToolStripSplitButton
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image
             };
-            var slideButton = new ToolStripButton("SLIDE", Resources.SlideIcon, (s, e) =>
+            knobButton.Text = "Knob";
+            knobButton.Click += (s, e) => noteView.NewNoteType = NoteType.Knob;
+            knobButton.DropDown.Items.AddRange((new ToolStripItem[]
             {
-                noteView.NewNoteType = NoteType.Slide;
-                noteView.IsNewSlideStepVisible = false;
-            })
-            {
-                DisplayStyle = ToolStripItemDisplayStyle.Image
-            };
-            var slideStepButton = new ToolStripButton(MainFormStrings.SlideStep, Resources.SlideStepIcon, (s, e) =>
-            {
-                noteView.NewNoteType = NoteType.Slide;
-                noteView.IsNewSlideStepVisible = true;
-            })
+                new ToolStripMenuItem(MainFormStrings.KnobLeft,Resources.AirLeftUpIcon,(s,e)=>noteView.KnobDirection=new KnobDirection(HorizontalDirection.Left)), 
+                new ToolStripMenuItem(MainFormStrings.KnobRight,Resources.AirRightUpIcon,(s,e)=>noteView.KnobDirection=new KnobDirection(HorizontalDirection.Right))
+            }));
+            knobButton.Image = Resources.AirLeftUpIcon;
+            var padHoldButton = new ToolStripButton("PadHold", Resources.AirActionIcon, (s, e) => noteView.NewNoteType = NoteType.PadHold)
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image
             };
-            var airActionButton = new ToolStripButton("AIR-ACTION", Resources.AirActionIcon, (s, e) => noteView.NewNoteType = NoteType.AirAction)
+            var faderHoldButton = new CheckableToolStripSplitButton
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image
             };
-            var flickButton = new ToolStripButton("FLICK", Resources.FlickIcon, (s, e) => noteView.NewNoteType = NoteType.Flick)
+            faderHoldButton.Text = "FaderHold";
+            faderHoldButton.Click += (s, e) => noteView.NewNoteType = NoteType.FaderHold;
+            faderHoldButton.DropDown.Items.AddRange((new ToolStripItem[]
+            {
+                new ToolStripMenuItem(MainFormStrings.FaderHoldDown,Resources.AirDownIcon,(s,e)=>noteView.FaderHoldDirection=new FaderDirection(VerticalDirection.DOWND)), 
+                new ToolStripMenuItem(MainFormStrings.FaderHoldUp,Resources.AirUpIcon,(s,e)=>noteView.FaderHoldDirection=new FaderDirection(VerticalDirection.UP))
+            }));
+            faderHoldButton.Image = Resources.AirDownIcon;
+            var knobHoldButton = new CheckableToolStripSplitButton()
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image
             };
-            var damageButton = new ToolStripButton("DAMAGE", Resources.DamgeIcon, (s, e) => noteView.NewNoteType = NoteType.Damage)
+            knobHoldButton.Text = "KnobHold";
+            knobHoldButton.Click += (s, e) => noteView.NewNoteType = NoteType.KnobHold;
+            knobHoldButton.DropDown.Items.AddRange((new ToolStripItem[]
             {
-                DisplayStyle = ToolStripItemDisplayStyle.Image
-            };
-
-            var airKind = new CheckableToolStripSplitButton()
-            {
-                DisplayStyle = ToolStripItemDisplayStyle.Image
-            };
-            airKind.Text = "AIR";
-            airKind.Click += (s, e) => noteView.NewNoteType = NoteType.Air;
-            airKind.DropDown.Items.AddRange(new ToolStripItem[]
-            {
-                new ToolStripMenuItem(MainFormStrings.AirUp, Resources.AirUpIcon, (s, e) => noteView.AirDirection = new AirDirection(VerticalAirDirection.Up, HorizontalAirDirection.Center)),
-                new ToolStripMenuItem(MainFormStrings.AirLeftUp, Resources.AirLeftUpIcon, (s, e) => noteView.AirDirection = new AirDirection(VerticalAirDirection.Up, HorizontalAirDirection.Left)),
-                new ToolStripMenuItem(MainFormStrings.AirRightUp, Resources.AirRightUpIcon, (s, e) => noteView.AirDirection = new AirDirection(VerticalAirDirection.Up, HorizontalAirDirection.Right)),
-                new ToolStripMenuItem(MainFormStrings.AirDown, Resources.AirDownIcon, (s, e) => noteView.AirDirection = new AirDirection(VerticalAirDirection.Down, HorizontalAirDirection.Center)),
-                new ToolStripMenuItem(MainFormStrings.AirLeftDown, Resources.AirLeftDownIcon, (s, e) => noteView.AirDirection = new AirDirection(VerticalAirDirection.Down, HorizontalAirDirection.Left)),
-                new ToolStripMenuItem(MainFormStrings.AirRightDown, Resources.AirRightDownIcon, (s, e) => noteView.AirDirection = new AirDirection(VerticalAirDirection.Down, HorizontalAirDirection.Right))
-            });
-            airKind.Image = Resources.AirUpIcon;
+                new ToolStripMenuItem(MainFormStrings.KnobHoldLeft,Resources.AirLeftUpIcon,(s,e)=>noteView.KnobHoldDirection=new KnobDirection(HorizontalDirection.Left)), 
+                new ToolStripMenuItem(MainFormStrings.KnobHoldRight,Resources.AirRightUpIcon,(s,e)=>noteView.KnobHoldDirection=new KnobDirection(HorizontalDirection.Right))
+            }));
+            knobHoldButton.Image = Resources.AirLeftUpIcon;
 
             var quantizeTicks = new int[]
             {
@@ -926,38 +925,66 @@ namespace Ched.UI
 
             noteView.NewNoteTypeChanged += (s, e) =>
             {
-                tapButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Tap);
-                exTapButton.Checked = noteView.NewNoteType.HasFlag(NoteType.ExTap);
-                holdButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Hold);
-                slideButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Slide) && !noteView.IsNewSlideStepVisible;
-                slideStepButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Slide) && noteView.IsNewSlideStepVisible;
-                airKind.Checked = noteView.NewNoteType.HasFlag(NoteType.Air);
-                airActionButton.Checked = noteView.NewNoteType.HasFlag(NoteType.AirAction);
-                flickButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Flick);
-                damageButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Damage);
+                padButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Pad);
+                faderButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Fader);
+                knobButton.Checked = noteView.NewNoteType.HasFlag(NoteType.Knob);
+                padHoldButton.Checked = noteView.NewNoteType.HasFlag(NoteType.PadHold);
+                faderHoldButton.Checked = noteView.NewNoteType.HasFlag(NoteType.FaderHold);
+                knobHoldButton.Checked = noteView.NewNoteType.HasFlag(NoteType.KnobHold);
             };
 
-            noteView.AirDirectionChanged += (s, e) =>
+            noteView.FaderDirectionChanged += (s, e) =>
             {
-                switch (noteView.AirDirection.HorizontalDirection)
+                switch (noteView.FaderDirection.VerticalDirection)
                 {
-                    case HorizontalAirDirection.Center:
-                        airKind.Image = noteView.AirDirection.VerticalDirection == VerticalAirDirection.Up ? Resources.AirUpIcon : Resources.AirDownIcon;
+                    case VerticalDirection.UP:
+                        faderButton.Image = Resources.AirUpIcon;
                         break;
-
-                    case HorizontalAirDirection.Left:
-                        airKind.Image = noteView.AirDirection.VerticalDirection == VerticalAirDirection.Up ? Resources.AirLeftUpIcon : Resources.AirLeftDownIcon;
+                    case VerticalDirection.DOWND:
+                        faderButton.Image = Resources.AirDownIcon;
                         break;
-
-                    case HorizontalAirDirection.Right:
-                        airKind.Image = noteView.AirDirection.VerticalDirection == VerticalAirDirection.Up ? Resources.AirRightUpIcon : Resources.AirRightDownIcon;
+                }
+            };
+            noteView.KnobDirectionChanged += (s, e) =>
+            {
+                switch (noteView.KnobDirection.HorizontalDirection)
+                {
+                    case HorizontalDirection.Left:
+                        knobButton.Image = Resources.AirLeftUpIcon;
+                        break;
+                    case HorizontalDirection.Right:
+                        faderButton.Image = Resources.AirRightUpIcon;
+                        break;
+                }
+            };
+            noteView.FaderHoldDirectionChanged += (s, e) =>
+            {
+                switch (noteView.FaderHoldDirection.VerticalDirection)
+                {
+                    case VerticalDirection.UP:
+                        faderHoldButton.Image = Resources.AirUpIcon;
+                        break;
+                    case VerticalDirection.DOWND:
+                        faderHoldButton.Image = Resources.AirDownIcon;
+                        break;
+                }
+            };
+            noteView.KnobHoldDirectionChanged += (s, e) =>
+            {
+                switch (noteView.KnobHoldDirection.HorizontalDirection)
+                {
+                    case HorizontalDirection.Left:
+                        knobHoldButton.Image = Resources.AirLeftUpIcon;
+                        break;
+                    case HorizontalDirection.Right:
+                        faderHoldButton.Image = Resources.AirRightUpIcon;
                         break;
                 }
             };
 
             return new ToolStrip(new ToolStripItem[]
             {
-                tapButton, exTapButton, holdButton, slideButton, slideStepButton, airKind, airActionButton, flickButton, damageButton,
+                padButton,faderButton,knobButton,padHoldButton,faderHoldButton,knobHoldButton,
                 quantizeComboBox
             });
         }

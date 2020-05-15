@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
-
+using System.Windows.Forms.VisualStyles;
 using Ched.Core;
 using Ched.Core.Notes;
 using Ched.Drawing;
@@ -27,6 +27,11 @@ namespace Ched.UI
         public event EventHandler SelectedRangeChanged;
         public event EventHandler NewNoteTypeChanged;
         public event EventHandler AirDirectionChanged;
+
+        public event EventHandler FaderDirectionChanged;
+        public event EventHandler KnobDirectionChanged;
+        public event EventHandler FaderHoldDirectionChanged;
+        public event EventHandler KnobHoldDirectionChanged;
         public event EventHandler DragScroll;
 
         private Color barLineColor = Color.FromArgb(160, 160, 160);
@@ -46,7 +51,49 @@ namespace Ched.UI
         private SelectionRange selectedRange = SelectionRange.Empty;
         private NoteType newNoteType = NoteType.Pad;
         private bool isNewSlideStepVisible = true;
+        private FaderDirection faderDirection = new FaderDirection(VerticalDirection.UP);
+        private KnobDirection knobDirection = new KnobDirection(HorizontalDirection.Left);
+        private FaderDirection faderHoldDirection = new FaderDirection(VerticalDirection.UP);
+        private KnobDirection knobHoldDirection = new KnobDirection(HorizontalDirection.Left);
 
+        public FaderDirection FaderDirection
+        {
+            get { return faderDirection; }
+            set
+            {
+                faderDirection = value;
+                FaderDirectionChanged?.Invoke(this,EventArgs.Empty);
+            }
+        }
+        public KnobDirection KnobDirection
+        {
+            get { return knobDirection; }
+            set
+            {
+                knobDirection = value;
+                FaderDirectionChanged?.Invoke(this,EventArgs.Empty);
+            }
+        }
+        public FaderDirection FaderHoldDirection
+        {
+            get { return faderHoldDirection; }
+            set
+            {
+                faderHoldDirection = value;
+                FaderDirectionChanged?.Invoke(this,EventArgs.Empty);
+            }
+        }
+        public KnobDirection KnobHoldDirection
+        {
+            get { return knobHoldDirection; }
+            set
+            {
+                knobHoldDirection = value;
+                FaderDirectionChanged?.Invoke(this,EventArgs.Empty);
+            }
+        }
+        
+        
         /// <summary>
         /// 小節の区切り線の色を設定します。
         /// </summary>
@@ -607,6 +654,7 @@ namespace Ched.UI
 
                             case NoteType.Knob:
                                 var extap = new Knob(new Tap());
+                                extap.HroizontalDirection = KnobDirection.HorizontalDirection;
                                 Notes.Add(extap);
                                 newNote = extap;
                                 op = new InsertKnobOperation(Notes, extap);
@@ -614,6 +662,7 @@ namespace Ched.UI
 
                             case NoteType.Fader:
                                 var flick = new Fader(new Tap());
+                                flick.VerticalDirection = FaderDirection.VerticalDirection;
                                 Notes.Add(flick);
                                 newNote = flick;
                                 op = new InsertFaderOperation(Notes, flick);
@@ -639,7 +688,9 @@ namespace Ched.UI
                                 {
                                     Tick = Math.Max(GetQuantizedTick(GetTickFromYPosition(scorePos.Y)), 0),
                                     Duration = (int) QuantizeTick,
-                                });
+                                })
+                                        {VerticalDirection = FaderHoldDirection.VerticalDirection,}
+                                    ;
                                 newNoteLaneIndex = (int)(scorePos.X / (UnitLaneWidth + BorderThickness)) - 1 / 2;
                                 hold.TapHold.LaneIndex = Math.Min(Constants.LanesCount - 1, Math.Max(0, newNoteLaneIndex));
                                 Notes.Add(hold);
@@ -665,7 +716,10 @@ namespace Ched.UI
                                     {
                                         Tick = Math.Max(GetQuantizedTick(GetTickFromYPosition(scorePos.Y)), 0),
                                         Duration = (int) QuantizeTick,
-                                    });
+                                    })
+                                    {
+                                        HroizontalDirection = KnobHoldDirection.HorizontalDirection,
+                                    };
                                     newNoteLaneIndex = (int)(scorePos.X / (UnitLaneWidth + BorderThickness)) - 1 / 2;
                                     knob.TapHold.LaneIndex = Math.Min(Constants.LanesCount - 1, Math.Max(0, newNoteLaneIndex));
                                     Notes.Add(knob);
@@ -1564,6 +1618,26 @@ namespace Ched.UI
         FaderHold = 1 << 3,
         Knob = 1 << 4,
         KnobHold = 1 << 5,
+    }
+
+    public struct FaderDirection
+    {
+        public VerticalDirection VerticalDirection { get; }
+
+        public FaderDirection(VerticalDirection verticalDirection)
+        {
+            this.VerticalDirection = verticalDirection;
+        }
+    }
+
+    public struct KnobDirection
+    {
+        public HorizontalDirection HorizontalDirection { get; }
+
+        public KnobDirection(HorizontalDirection horizontalDirection)
+        {
+            this.HorizontalDirection = horizontalDirection;
+        }
     }
 
     [Serializable]

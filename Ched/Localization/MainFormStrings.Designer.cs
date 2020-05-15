@@ -122,6 +122,63 @@ namespace Ched.Localization {
                 return ResourceManager.GetString("AirUp", resourceCulture);
             }
         }
+
+        internal static string KnobLeft
+        {
+            get
+            {
+                return ResourceManager.GetString("KnobLeft", resourceCulture);
+            }
+        }
+        internal static string KnobRight
+        {
+            get
+            {
+                return ResourceManager.GetString("KnobRight", resourceCulture);
+            }
+        }
+        internal static string FaderUp
+        {
+            get
+            {
+                return ResourceManager.GetString("FaderUp", resourceCulture);
+            }
+        }
+        internal static string FaderDown
+        {
+            get
+            {
+                return ResourceManager.GetString("FaderDown", resourceCulture);
+            }
+        }
+        internal static string KnobHoldLeft
+        {
+            get
+            {
+                return ResourceManager.GetString("KnobLeft", resourceCulture);
+            }
+        }
+        internal static string KnobHoldRight
+        {
+            get
+            {
+                return ResourceManager.GetString("KnobRight", resourceCulture);
+            }
+        }
+        internal static string FaderHoldUp
+        {
+            get
+            {
+                return ResourceManager.GetString("FaderUp", resourceCulture);
+            }
+        }
+        internal static string FaderHoldDown
+        {
+            get
+            {
+                return ResourceManager.GetString("FaderDown", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to 譜面プロパティ.

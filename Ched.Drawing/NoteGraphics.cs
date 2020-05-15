@@ -146,52 +146,52 @@ namespace Ched.Drawing
             return path;
         }
 
-        public static void DrawAir(this DrawingContext dc, RectangleF targetNoteRect, VerticalAirDirection verticalDirection, HorizontalAirDirection horizontalDirection)
-        {
-            var targetRect = GetAirRect(targetNoteRect);
-            // ノートを内包するRect(ノートの下部中心が原点)
-            var box = new RectangleF(-targetRect.Width / 2, -targetRect.Height, targetRect.Width, targetRect.Height);
-            // ノート形状の構成点(上向き)
-            var points = new PointF[]
-            {
-                new PointF(box.Left, box.Bottom),
-                new PointF(box.Left, box.Top + box.Height / 3),
-                new PointF(box.Left + box.Width / 2 , box.Top),
-                new PointF(box.Right, box.Top + box.Height / 3),
-                new PointF(box.Right, box.Bottom),
-                new PointF(box.Left + box.Width / 2, box.Bottom - box.Height / 3)
-            };
-
-            using (var path = new GraphicsPath())
-            {
-                path.AddPolygon(points);
-                var prevMatrix = dc.Graphics.Transform;
-                var matrix = prevMatrix.Clone();
-
-                // 描画先の下部中心を原点にもってくる
-                matrix.Translate(targetRect.Left + targetRect.Width / 2, targetRect.Top);
-                // 振り上げなら上下反転(描画座標が上下逆になってるので……)
-                if (verticalDirection == VerticalAirDirection.Up) matrix.Scale(1, -1);
-                // 左右分で傾斜をかける
-                if (horizontalDirection != HorizontalAirDirection.Center) matrix.Shear(horizontalDirection == HorizontalAirDirection.Left ? 0.5f : -0.5f, 0);
-                // 振り下げでずれた高さを補正
-                if (verticalDirection == VerticalAirDirection.Down) matrix.Translate(0, box.Height);
-
-                dc.Graphics.Transform = matrix;
-
-                using (var brush = new SolidBrush(verticalDirection == VerticalAirDirection.Down ? dc.ColorProfile.AirDownColor : dc.ColorProfile.AirUpColor))
-                {
-                    dc.Graphics.FillPath(brush, path);
-                }
-                // 斜めになると太さが大きく出てしまう
-                using (var pen = new Pen(dc.ColorProfile.BorderColor.LightColor, targetRect.Height * (horizontalDirection == HorizontalAirDirection.Center ? 0.12f : 0.1f)) { LineJoin = LineJoin.Bevel })
-                {
-                    dc.Graphics.DrawPath(pen, path);
-                }
-
-                dc.Graphics.Transform = prevMatrix;
-            }
-        }
+        // public static void DrawAir(this DrawingContext dc, RectangleF targetNoteRect, VerticalAirDirection verticalDirection, HorizontalAirDirection horizontalDirection)
+        // {
+        //     var targetRect = GetAirRect(targetNoteRect);
+        //     // ノートを内包するRect(ノートの下部中心が原点)
+        //     var box = new RectangleF(-targetRect.Width / 2, -targetRect.Height, targetRect.Width, targetRect.Height);
+        //     // ノート形状の構成点(上向き)
+        //     var points = new PointF[]
+        //     {
+        //         new PointF(box.Left, box.Bottom),
+        //         new PointF(box.Left, box.Top + box.Height / 3),
+        //         new PointF(box.Left + box.Width / 2 , box.Top),
+        //         new PointF(box.Right, box.Top + box.Height / 3),
+        //         new PointF(box.Right, box.Bottom),
+        //         new PointF(box.Left + box.Width / 2, box.Bottom - box.Height / 3)
+        //     };
+        //
+        //     using (var path = new GraphicsPath())
+        //     {
+        //         path.AddPolygon(points);
+        //         var prevMatrix = dc.Graphics.Transform;
+        //         var matrix = prevMatrix.Clone();
+        //
+        //         // 描画先の下部中心を原点にもってくる
+        //         matrix.Translate(targetRect.Left + targetRect.Width / 2, targetRect.Top);
+        //         // 振り上げなら上下反転(描画座標が上下逆になってるので……)
+        //         if (verticalDirection == VerticalAirDirection.Up) matrix.Scale(1, -1);
+        //         // 左右分で傾斜をかける
+        //         if (horizontalDirection != HorizontalAirDirection.Center) matrix.Shear(horizontalDirection == HorizontalAirDirection.Left ? 0.5f : -0.5f, 0);
+        //         // 振り下げでずれた高さを補正
+        //         if (verticalDirection == VerticalAirDirection.Down) matrix.Translate(0, box.Height);
+        //
+        //         dc.Graphics.Transform = matrix;
+        //
+        //         using (var brush = new SolidBrush(verticalDirection == VerticalAirDirection.Down ? dc.ColorProfile.AirDownColor : dc.ColorProfile.AirUpColor))
+        //         {
+        //             dc.Graphics.FillPath(brush, path);
+        //         }
+        //         // 斜めになると太さが大きく出てしまう
+        //         using (var pen = new Pen(dc.ColorProfile.BorderColor.LightColor, targetRect.Height * (horizontalDirection == HorizontalAirDirection.Center ? 0.12f : 0.1f)) { LineJoin = LineJoin.Bevel })
+        //         {
+        //             dc.Graphics.DrawPath(pen, path);
+        //         }
+        //
+        //         dc.Graphics.Transform = prevMatrix;
+        //     }
+        // }
 
         public static RectangleF GetAirRect(RectangleF targetNoteRect)
         {

@@ -23,9 +23,6 @@ namespace Ched.Plugins
             sb.AppendLine(string.Format("総コンボ数: {0}", combo.Total));
             sb.AppendLine(string.Format("TAP: {0}", combo.Tap));
             sb.AppendLine(string.Format("HOLD: {0}", combo.Hold));
-            sb.AppendLine(string.Format("SLIDE: {0}", combo.Slide));
-            sb.AppendLine(string.Format("AIR: {0}", combo.Air));
-            sb.AppendLine(string.Format("FLICK: {0}", combo.Flick));
 
             MessageBox.Show(sb.ToString(), DisplayName);
         }
@@ -35,19 +32,14 @@ namespace Ched.Plugins
             var combo = new ComboDetails();
             combo.Tap += new int[]
             {
-                score.Notes.Taps.Count,
-                score.Notes.ExTaps.Count,
-                score.Notes.Damages.Count,
-                score.Notes.Holds.Count,
-                score.Notes.Slides.Count
+                score.Notes.Pads.Count,
+                score.Notes.Faders.Count,
+                score.Notes.Knobs.Count,
             }.Sum();
 
-            combo.Flick += score.Notes.Flicks.Count;
-            combo.Air += score.Notes.Airs.Count;
 
             int barTick = 4 * score.TicksPerBeat;
             var bpmEvents = score.Events.BPMChangeEvents.OrderBy(p => p.Tick).ToList();
-            var airList = new HashSet<IAirable>(score.Notes.Airs.Select(p => p.ParentNote));
             Func<int, decimal> getHeadBpmAt = tick => (bpmEvents.LastOrDefault(p => p.Tick <= tick) ?? bpmEvents[0]).BPM;
             Func<int, decimal> getTailBpmAt = tick => (bpmEvents.LastOrDefault(p => p.Tick < tick) ?? bpmEvents[0]).BPM;
             Func<decimal, int> comboDivider = bpm => bpm < 120 ? 16 : (bpm < 240 ? 8 : 4);
@@ -80,49 +72,12 @@ namespace Ched.Plugins
                 return ticks.Where(p => p <= duration - interval).ToList();
             };
 
-            foreach (var hold in score.Notes.Holds)
+            var holds = score.Notes.GetHolds();
+
+            foreach (var hold in holds)
             {
-                var tickList = new HashSet<int>(calcComboTicks(hold.StartTick, new int[] { hold.Duration }));
-
-                if (airList.Contains(hold.EndNote))
-                {
-                    combo.Hold += removeLostTicks(tickList, hold.StartTick, hold.Duration).Count();
-                }
-                else
-                {
-                    combo.Hold += tickList.Count;
-                }
-            }
-
-            foreach (var slide in score.Notes.Slides)
-            {
-                var tickList = new HashSet<int>(calcComboTicks(slide.StartTick, slide.StepNotes.Where(p => p.IsVisible).Select(p => p.TickOffset)));
-
-                if (airList.Contains(slide.StepNotes.OrderByDescending(p => p.TickOffset).First()))
-                {
-                    combo.Slide += removeLostTicks(tickList, slide.StartTick, slide.GetDuration()).Count();
-                }
-                else
-                {
-                    combo.Slide += tickList.Count;
-                }
-            }
-
-            foreach (var airAction in score.Notes.AirActions)
-            {
-                var airActionTicks = airAction.ActionNotes.Select(p => p.Offset).ToList();
-                var lostSections = airActionTicks.Concat(new[] { 0 }).Select(p =>
-                 {
-                     int interval = barTick / comboDivider(getHeadBpmAt(airAction.StartTick + p));
-                     return Tuple.Create(p, interval);
-                 }).ToList();
-
-                var validAirHoldTicks = calcComboTicks(airAction.StartTick, airActionTicks)
-                    .Where(p => lostSections.All(q => p <= q.Item1 || p > q.Item1 + q.Item2))
-                    .Except(airActionTicks)
-                    .ToList();
-
-                combo.Air += validAirHoldTicks.Count + airActionTicks.Count;
+                var tickList = new HashSet<int>(calcComboTicks(hold.Tick, new int[] { hold.Duration }));
+                combo.Hold += tickList.Count;
             }
 
             return combo;
@@ -130,12 +85,9 @@ namespace Ched.Plugins
 
         public struct ComboDetails
         {
-            public int Total => Tap + Hold + Slide + Air + Flick;
+            public int Total => Tap + Hold;
             public int Tap { get; set; }
             public int Hold { get; set; }
-            public int Slide { get; set; }
-            public int Air { get; set; }
-            public int Flick { get; set; }
         }
     }
 }
