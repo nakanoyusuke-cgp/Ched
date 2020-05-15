@@ -313,6 +313,9 @@
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\NoteView.resx">
+      <DependentUpon>NoteView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\SoundSourceSelector.en.resx">
       <DependentUpon>SoundSourceSelector.cs</DependentUpon>
     </EmbeddedResource>

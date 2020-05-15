@@ -372,23 +372,35 @@ namespace Ched.UI
                 AirStepColor = new GradientColor(Color.FromArgb(6, 180, 10), Color.FromArgb(80, 224, 64))
             };
 
+            //マウスイベントを変数化
             var mouseDown = this.MouseDownAsObservable();
             var mouseMove = this.MouseMoveAsObservable();
             var mouseUp = this.MouseUpAsObservable();
 
+            #region マウスがクリックされていないとき
+
             // マウスをクリックしているとき以外
+            //EditModeであれば
             var mouseMoveSubscription = mouseMove.TakeUntil(mouseDown).Concat(mouseMove.SkipUntil(mouseUp).TakeUntil(mouseDown).Repeat())
                 .Where(p => EditMode == EditMode.Edit && Editable)
                 .Do(p =>
                 {
+                    //マウス位置を取得
                     var pos = GetDrawingMatrix(new Matrix()).GetInvertedMatrix().TransformPoint(p.Location);
+                    //表示終端のTick
                     int tailTick = TailTick;
+                    //表示範囲にいるか判定するデリゲート
                     Func<int, bool> visibleTick = t => t >= HeadTick && t <= tailTick;
 
+
+                    #region 表示範囲内にあるノーツをIEnumerable<RectangleF>の形式で格納
+
+                    //表示範囲内にあるAirActionのRectangleFのコレクション
                     var airActions = Notes.AirActions.Reverse()
                         .SelectMany(q => q.ActionNotes.Where(r => visibleTick(q.StartTick + r.Offset)))
                         .Select(q => GetClickableRectFromNotePosition(q.ParentNote.StartTick + q.Offset, q.ParentNote.ParentNote.LaneIndex, q.ParentNote.ParentNote.Width));
 
+                    //表示範囲内にあるshortNotesのRectangleFのコレクション
                     var shortNotes = Enumerable.Empty<TappableBase>()
                         .Concat(Notes.Damages.Reverse())
                         .Concat(Notes.ExTaps.Reverse())
@@ -397,11 +409,18 @@ namespace Ched.UI
                         .Where(q => visibleTick(q.Tick))
                         .Select(q => GetClickableRectFromNotePosition(q.Tick, q.LaneIndex, q.Width));
 
+                    //表示範囲内にあるスライドのRectangleFのコレクション
                     var slides = Notes.Slides.Reverse()
                         .SelectMany(q => q.StepNotes.OrderByDescending(r => r.TickOffset).Concat(new LongNoteTapBase[] { q.StartNote }))
                         .Where(q => visibleTick(q.Tick))
                         .Select(q => GetClickableRectFromNotePosition(q.Tick, q.LaneIndex, q.Width));
 
+                    #endregion
+
+
+                    #region カーソルの位置によってカーソルの見た目を変更
+
+                    //エアーアクションノーツのクリッカブル範囲にマウスカーソルがある場合カーソルの見た目を↕に変更
                     foreach (RectangleF rect in airActions)
                     {
                         if (!rect.Contains(pos)) continue;
@@ -409,6 +428,8 @@ namespace Ched.UI
                         return;
                     }
 
+                    //ショートノーツとスライドノーツの端にマウスカーソルがあるときマウスカーソルの見た目を⇔に変更
+                    //真ん中の時は↕↔に変更
                     foreach (RectangleF rect in shortNotes.Concat(slides))
                     {
                         if (!rect.Contains(pos)) continue;
@@ -418,6 +439,9 @@ namespace Ched.UI
                         return;
                     }
 
+                    //ホールドノーツの終端にマウスカーソルがあるときマウスカーソルの見た目を↕に変更
+                    //ホールドノーツの始点の端にマウスカーソルがあるときカーソルの見た目を⇔に変更
+                    //ホールドノーツの始点の中心にマウスカーソルがあるときカーソルの見た目を↕⇔に変更
                     foreach (var hold in Notes.Holds.Reverse())
                     {
                         if (GetClickableRectFromNotePosition(hold.EndNote.Tick, hold.LaneIndex, hold.Width).Contains(pos))
@@ -434,9 +458,16 @@ namespace Ched.UI
                         return;
                     }
 
+                    //該当箇所がなければカーソルの見た目をデフォルトにする
                     Cursor = Cursors.Default;
+
+                    #endregion
                 })
                 .Subscribe();
+            
+            #endregion
+
+            #region マウスがドラッグされているとき
 
             var dragSubscription = mouseDown
                 .SelectMany(p => mouseMove.TakeUntil(mouseUp).TakeUntil(mouseUp)
@@ -456,6 +487,7 @@ namespace Ched.UI
                             DragScroll?.Invoke(this, EventArgs.Empty);
                         }
                     })).Subscribe();
+            #endregion
 
             var editSubscription = mouseDown
                 .Where(p => Editable)
@@ -472,6 +504,7 @@ namespace Ched.UI
                     RectangleF scoreRect = new RectangleF(0, GetYPositionFromTick(HeadTick), LaneWidth, GetYPositionFromTick(TailTick) - GetYPositionFromTick(HeadTick));
                     if (!scoreRect.Contains(scorePos)) return Observable.Empty<MouseEventArgs>();
 
+                    //エアーアクションを追加する準備をするためのデリゲート
                     Func<AirAction.ActionNote, IObservable<MouseEventArgs>> actionNoteHandler = action =>
                     {
                         var offsets = new HashSet<int>(action.ParentNote.ActionNotes.Select(q => q.Offset));
@@ -949,6 +982,9 @@ namespace Ched.UI
                         return null;
                     };
 
+
+                    #region NoteEditStart
+                    
                     // AIR系編集時
                     if ((NoteType.Air | NoteType.AirAction).HasFlag(NewNoteType))
                     {
@@ -1174,6 +1210,9 @@ namespace Ched.UI
                     }
                     return Observable.Empty<MouseEventArgs>();
                 }).Subscribe(p => Invalidate());
+            
+            
+            #endregion
 
             Func<PointF, IObservable<MouseEventArgs>> rangeSelection = startPos =>
             {
@@ -1205,7 +1244,9 @@ namespace Ched.UI
                         };
                     });
             };
+            
 
+            //クリック時の配置
             var eraseSubscription = mouseDown
                 .Where(p => Editable)
                 .Where(p => p.Button == MouseButtons.Left && EditMode == EditMode.Erase)
@@ -1868,6 +1909,8 @@ namespace Ched.UI
             throw new InvalidOperationException();
         }
 
+        //描画するノーツの設定
+        //(四角の左上のx座標,四角の左上のy座標,四角の幅,四角の高さ)
         private RectangleF GetRectFromNotePosition(int tick, int laneIndex, int width)
         {
             return new RectangleF(
@@ -1878,6 +1921,7 @@ namespace Ched.UI
                 );
         }
 
+        //Clickableな四角形はノーツに対してｘ、ｙそれぞれに1増加した範囲
         private RectangleF GetClickableRectFromNotePosition(int tick, int laneIndex, int width)
         {
             return GetRectFromNotePosition(tick, laneIndex, width).Expand(1);
