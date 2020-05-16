@@ -65,7 +65,7 @@ namespace Ched.UI
             }
         }
 
-        private bool CanWidenLaneWidth => !IsPreviewMode && NoteView.UnitLaneWidth < 24;
+        private bool CanWidenLaneWidth => !IsPreviewMode && NoteView.UnitLaneWidth < 64;
         private bool CanNarrowLaneWidth => !IsPreviewMode && NoteView.UnitLaneWidth > 12;
         private bool CanZoomIn => !IsPreviewMode && NoteView.UnitBeatHeight < 960;
         private bool CanZoomOut => !IsPreviewMode && NoteView.UnitBeatHeight > 30;
@@ -847,10 +847,10 @@ namespace Ched.UI
             faderButton.Click += (s, e) => noteView.NewNoteType = NoteType.Fader;
             faderButton.DropDown.Items.AddRange((new ToolStripItem[]
             {
+                new ToolStripMenuItem(MainFormStrings.FaderUp,Resources.AirUpIcon,(s,e)=>noteView.FaderDirection=new FaderDirection(VerticalDirection.UP)),
                 new ToolStripMenuItem(MainFormStrings.FaderDown,Resources.AirDownIcon,(s,e)=>noteView.FaderDirection=new FaderDirection(VerticalDirection.DOWND)), 
-                new ToolStripMenuItem(MainFormStrings.FaderUp,Resources.AirUpIcon,(s,e)=>noteView.FaderDirection=new FaderDirection(VerticalDirection.UP))
             }));
-            faderButton.Image = Resources.AirDownIcon;
+            faderButton.Image = Resources.AirUpIcon;
             var knobButton = new CheckableToolStripSplitButton
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image
@@ -863,7 +863,7 @@ namespace Ched.UI
                 new ToolStripMenuItem(MainFormStrings.KnobRight,Resources.AirRightUpIcon,(s,e)=>noteView.KnobDirection=new KnobDirection(HorizontalDirection.Right))
             }));
             knobButton.Image = Resources.AirLeftUpIcon;
-            var padHoldButton = new ToolStripButton("PadHold", Resources.AirActionIcon, (s, e) => noteView.NewNoteType = NoteType.PadHold)
+            var padHoldButton = new ToolStripButton("PadHold", Resources.HoldIcon, (s, e) => noteView.NewNoteType = NoteType.PadHold)
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image
             };
@@ -875,10 +875,10 @@ namespace Ched.UI
             faderHoldButton.Click += (s, e) => noteView.NewNoteType = NoteType.FaderHold;
             faderHoldButton.DropDown.Items.AddRange((new ToolStripItem[]
             {
+                new ToolStripMenuItem(MainFormStrings.FaderHoldUp,Resources.AirUpIcon,(s,e)=>noteView.FaderHoldDirection=new FaderDirection(VerticalDirection.UP)),
                 new ToolStripMenuItem(MainFormStrings.FaderHoldDown,Resources.AirDownIcon,(s,e)=>noteView.FaderHoldDirection=new FaderDirection(VerticalDirection.DOWND)), 
-                new ToolStripMenuItem(MainFormStrings.FaderHoldUp,Resources.AirUpIcon,(s,e)=>noteView.FaderHoldDirection=new FaderDirection(VerticalDirection.UP))
             }));
-            faderHoldButton.Image = Resources.AirDownIcon;
+            faderHoldButton.Image = Resources.AirUpIcon;
             var knobHoldButton = new CheckableToolStripSplitButton()
             {
                 DisplayStyle = ToolStripItemDisplayStyle.Image

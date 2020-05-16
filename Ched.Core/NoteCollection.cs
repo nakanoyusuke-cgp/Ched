@@ -58,6 +58,21 @@ namespace Ched.Core
 
         public IEnumerable<TapHold> GetHolds() => GetAllNotes().Where(x => x.IsHold);
 
+        public IEnumerable<NoteBase> GetTapsInNoteBase() => GetAllNotesInNoteBase().Where(x => !x.TapHold.IsHold);
+        public IEnumerable<NoteBase> GetHoldsInNoteBase() => GetAllNotesInNoteBase().Where(x => x.TapHold.IsHold);
+        
+        public IEnumerable<NoteBase> GetAllNotesInNoteBase()
+        {
+            foreach (var tapHold in pads)
+                yield return tapHold;
+
+            foreach (var tapHold in faders)
+                yield return tapHold;
+
+            foreach (var tapHold in knobs)
+                yield return tapHold;
+        }
+
         public IEnumerable<TapHold> GetAllNotes()
         {
             foreach (var tapHold in pads.Select(x => x.TapHold))

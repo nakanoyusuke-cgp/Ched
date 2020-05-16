@@ -16,10 +16,10 @@ namespace Ched.UI
 {
     public partial class ExportForm : Form
     {
-        private readonly string ArgsKey = "sus";
-        private readonly string Filter = "Seaurchin Score File(*.sus)|*.sus";
+        private readonly string ArgsKey = "csv";
+        private readonly string Filter = "comma separated value (*.csv)|*.csv";
 
-        private SusExporter exporter = new SusExporter();
+        private CsvExporter exporter = new CsvExporter();
 
         public string OutputPath
         {

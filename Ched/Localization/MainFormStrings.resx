@@ -246,6 +246,30 @@
   <data name="AirUp" xml:space="preserve">
     <value>振り上げAIR</value>
   </data>
+  <data name="KnobLeft" xml:space="preserve">
+    <value>左ノブ</value>
+  </data>
+  <data name="KnobRight" xml:space="preserve">
+    <value>右ノブ</value>
+  </data>
+  <data name="FaderUp" xml:space="preserve">
+    <value>上フェーダー</value>
+  </data>
+  <data name="FaderDown" xml:space="preserve">
+    <value>下フェーダー</value>
+  </data>
+  <data name="KnobHoldLeft" xml:space="preserve">
+    <value>左ノブホールド</value>
+  </data>
+  <data name="KnobHoldRight" xml:space="preserve">
+    <value>右ノブホールド</value>
+  </data>
+  <data name="FaderHoldUp" xml:space="preserve">
+    <value>上フェーダーホールド</value>
+  </data>
+  <data name="FaderHoldDown" xml:space="preserve">
+    <value>下フェーダーホールド</value>
+  </data>
   <data name="Custom" xml:space="preserve">
     <value>カスタム</value>
   </data>

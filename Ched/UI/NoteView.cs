@@ -39,7 +39,7 @@ namespace Ched.UI
         private Color laneBorderLightColor = Color.FromArgb(60, 60, 60);
         private Color laneBorderDarkColor = Color.FromArgb(30, 30, 30);
         private ColorProfile colorProfile;
-        private int unitLaneWidth = 12;
+        private int unitLaneWidth = 24;
         private int shortNoteHeight = 5;
         private int unitBeatTick = 480;
         private float unitBeatHeight = 120;
@@ -403,7 +403,7 @@ namespace Ched.UI
                 AirDownColor = Color.FromArgb(192, 21, 216),
                 AirActionColor = new GradientColor(Color.FromArgb(146, 0, 192), Color.FromArgb(212, 92, 255)),
                 AirHoldLineColor = Color.FromArgb(216, 0, 196, 0),
-                AirStepColor = new GradientColor(Color.FromArgb(6, 180, 10), Color.FromArgb(80, 224, 64))
+                AirStepColor = new GradientColor(Color.FromArgb(6, 180, 10), Color.FromArgb(80, 224, 64)),
             };
 
             var mouseDown = this.MouseDownAsObservable();
@@ -1114,10 +1114,22 @@ namespace Ched.UI
             //     dc.DrawFlick(GetRectFromNotePosition(note.Tick, note.LaneIndex, note.Width));
             // }
             //
-            foreach (var note in Notes.GetTaps().Where(p => p.Tick >= HeadTick && p.Tick <= tailTick))
+            foreach (var note in Notes.Pads.Where(p => p.TapHold.Tick >= HeadTick && p.TapHold.Tick <= tailTick))
             {
-                dc.DrawTap(GetRectFromNotePosition(note.Tick, note.LaneIndex));
+                dc.DrawTap(GetRectFromNotePosition(note.TapHold.Tick, note.TapHold.LaneIndex));
             }
+
+            foreach (var note in Notes.Faders.Where(p=>p.TapHold.Tick >= HeadTick && p.TapHold.Tick <= tailTick))
+            {
+                dc.DrawTap(GetRectFromNotePosition(note.TapHold.Tick, note.TapHold.LaneIndex));
+                dc.DrawAirVertical(GetRectFromNotePosition(note.TapHold.Tick, note.TapHold.LaneIndex),note.VerticalDirection);
+            }
+            foreach (var note in Notes.Knobs.Where(p=>p.TapHold.Tick >= HeadTick && p.TapHold.Tick <= tailTick))
+            {
+                dc.DrawTap(GetRectFromNotePosition(note.TapHold.Tick, note.TapHold.LaneIndex));
+                dc.DrawAirHorizontal(GetRectFromNotePosition(note.TapHold.Tick, note.TapHold.LaneIndex),note.HroizontalDirection);
+            }
+            
             //
             // foreach (var note in Notes.ExTaps.Where(p => p.Tick >= HeadTick && p.Tick <= tailTick))
             // {
@@ -1538,6 +1550,21 @@ namespace Ched.UI
             public List<TapHold> GetAllNotes()
             {
                 return source.GetAllNotes().ToList();
+            }
+
+            public List<NoteBase> GetTapsInNoteBase()
+            {
+                return source.GetTapsInNoteBase().ToList();
+            }
+            
+            public List<NoteBase> GetHoldsInNoteBase()
+            {
+                return source.GetHoldsInNoteBase().ToList();
+            }
+
+            public List<NoteBase> GetAllNotesInNoteBase()
+            {
+                return source.GetAllNotesInNoteBase().ToList();
             }
 
             public void Add(Pad note)

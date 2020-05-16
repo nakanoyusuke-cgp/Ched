@@ -122,63 +122,6 @@ namespace Ched.Localization {
                 return ResourceManager.GetString("AirUp", resourceCulture);
             }
         }
-
-        internal static string KnobLeft
-        {
-            get
-            {
-                return ResourceManager.GetString("KnobLeft", resourceCulture);
-            }
-        }
-        internal static string KnobRight
-        {
-            get
-            {
-                return ResourceManager.GetString("KnobRight", resourceCulture);
-            }
-        }
-        internal static string FaderUp
-        {
-            get
-            {
-                return ResourceManager.GetString("FaderUp", resourceCulture);
-            }
-        }
-        internal static string FaderDown
-        {
-            get
-            {
-                return ResourceManager.GetString("FaderDown", resourceCulture);
-            }
-        }
-        internal static string KnobHoldLeft
-        {
-            get
-            {
-                return ResourceManager.GetString("KnobLeft", resourceCulture);
-            }
-        }
-        internal static string KnobHoldRight
-        {
-            get
-            {
-                return ResourceManager.GetString("KnobRight", resourceCulture);
-            }
-        }
-        internal static string FaderHoldUp
-        {
-            get
-            {
-                return ResourceManager.GetString("FaderUp", resourceCulture);
-            }
-        }
-        internal static string FaderHoldDown
-        {
-            get
-            {
-                return ResourceManager.GetString("FaderDown", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   Looks up a localized string similar to 譜面プロパティ.
@@ -271,6 +214,42 @@ namespace Ched.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 下フェーダー.
+        /// </summary>
+        internal static string FaderDown {
+            get {
+                return ResourceManager.GetString("FaderDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下フェーダーホールド.
+        /// </summary>
+        internal static string FaderHoldDown {
+            get {
+                return ResourceManager.GetString("FaderHoldDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 上フェーダーホールド.
+        /// </summary>
+        internal static string FaderHoldUp {
+            get {
+                return ResourceManager.GetString("FaderHoldUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 上フェーダー.
+        /// </summary>
+        internal static string FaderUp {
+            get {
+                return ResourceManager.GetString("FaderUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ファイル(&amp;F).
         /// </summary>
         internal static string FileMenu {
@@ -339,6 +318,42 @@ namespace Ched.Localization {
         internal static string InsertMenu {
             get {
                 return ResourceManager.GetString("InsertMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 左ノブホールド.
+        /// </summary>
+        internal static string KnobHoldLeft {
+            get {
+                return ResourceManager.GetString("KnobHoldLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 右ノブホールド.
+        /// </summary>
+        internal static string KnobHoldRight {
+            get {
+                return ResourceManager.GetString("KnobHoldRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 左ノブ.
+        /// </summary>
+        internal static string KnobLeft {
+            get {
+                return ResourceManager.GetString("KnobLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 右ノブ.
+        /// </summary>
+        internal static string KnobRight {
+            get {
+                return ResourceManager.GetString("KnobRight", resourceCulture);
             }
         }
         

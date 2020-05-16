@@ -39,6 +39,8 @@ namespace Ched.Drawing
         public GradientColor AirActionColor { get; set; }
         public Color AirUpColor { get; set; }
         public Color AirDownColor { get; set; }
+        public Color AirLeftColor { get; set; }
+        public Color AirRightColor { get; set; }
         public Color AirHoldLineColor { get; set; }
         public GradientColor AirStepColor { get; set; }
     }
