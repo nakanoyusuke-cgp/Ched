@@ -426,6 +426,15 @@ namespace Ched.UI
                         .Where(q => visibleTick(q.TapHold.Tick))
                         .Select(q => GetClickableRectFromNotePosition(q.TapHold.Tick, q.TapHold.LaneIndex));
 
+                    foreach (RectangleF rect in shortNotes)
+                    {
+                        if (!rect.Contains(pos)) continue;
+                        RectangleF left = rect.GetLeftThumb(EdgeHitWidthRate, MinimumEdgeHitWidth);
+                        RectangleF right = rect.GetRightThumb(EdgeHitWidthRate, MinimumEdgeHitWidth);
+                        Cursor = (left.Contains(pos) || right.Contains(pos)) ? Cursors.SizeWE : Cursors.SizeAll;
+                        return;
+                    }
+
                     foreach (Hold hold in Notes.GetHolds().AsEnumerable().Reverse())
                     {
                         if (GetClickableRectFromNotePosition(hold.EndNote.Tick, hold.LaneIndex).Contains(pos))
